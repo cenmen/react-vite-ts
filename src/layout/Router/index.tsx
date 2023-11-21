@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { pick } from 'lodash-es';
-import { fetchAuthInfo } from '@/api';
+import { fetchAuthInfo } from '@/services';
 import { routers, RouterItem } from '@/routers';
 import { useAuthStore } from '@/store';
 

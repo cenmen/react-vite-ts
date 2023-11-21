@@ -6,7 +6,7 @@ const LayoutHeader = () => {
 	const { Header } = Layout;
 
 	return (
-		<Header>
+		<Header className='flex items-center justify-between bg-white h-12 px-4'>
 			<div className='flex items-center'>
 				<CollapseIcon />
 			</div>

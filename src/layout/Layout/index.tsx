@@ -62,8 +62,8 @@ const LayoutIndex: React.FC<Props> = props => {
 	const childrenContent = children || outlet;
 
 	return (
-		<Layout className='h-screen'>
-			<Sider trigger={null} collapsed={isCollapse} width={220} theme='dark'>
+		<Layout className='h-screen bg-[#f0f2f5]'>
+			<Sider className='shadow-[2px_0_6px_rgba(0,21,41,0.35)]' trigger={null} collapsed={isCollapse} width={220} theme='dark'>
 				<LayoutMenu />
 			</Sider>
 			<Layout>

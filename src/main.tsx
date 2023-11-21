@@ -4,4 +4,4 @@ import 'antd/dist/reset.css';
 import '@/styles/antd.css';
 import App from '@/App';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />);
+ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(<App />);

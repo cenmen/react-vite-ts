@@ -1,4 +1,4 @@
-import { Avatar, Menu, Dropdown, message } from 'antd';
+import { Avatar, Dropdown, message } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useAuthStore } from '@/store';
 
@@ -13,20 +13,24 @@ const AvatarIcon = () => {
 		// navigate('/login');
 	};
 
-	const menuList = [
+	const items = [
 		{
 			key: 'logout',
-			label: <span className='dropdown-item'>退出登录</span>,
-			icon: <LogoutOutlined />,
-			onClick: logout
+			label: (
+				<span className='dropdown-item' onClick={logout}>
+					退出登录
+				</span>
+			),
+			icon: <LogoutOutlined />
 		}
 	];
 
-	const menu = <Menu items={menuList}></Menu>;
-
 	return (
-		<Dropdown menu={menu} placement='bottomRight' arrow>
-			<Avatar size='large' src='../../../assets/images/logo.png' />
+		<Dropdown menu={{ items }} placement='bottomRight' arrow>
+			<Avatar
+				className='w-8 h-8 duration-500 ease-in-out overflow-hidden grayscale-[30%] hover:scale-110 hover:grayscale-0'
+				src='https://img01.yzcdn.cn/vant/logo.png'
+			/>
 		</Dropdown>
 	);
 };
