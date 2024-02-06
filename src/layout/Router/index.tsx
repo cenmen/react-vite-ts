@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { BrowserRouter, useRoutes } from 'react-router-dom';
+import { BrowserRouter, useRoutes, RouteObject } from 'react-router-dom';
 import { pick } from 'lodash-es';
 import { fetchAuthInfo } from '@/services';
-import { routers, RouterItem } from '@/routers';
+import { routers } from '@/routers';
 import { useAuthStore } from '@/store';
 
 // 默认父级菜单下没有子菜单则过滤掉父菜单
@@ -14,7 +14,7 @@ import { useAuthStore } from '@/store';
 // };
 
 type AuthRouterProps = {
-	routes: RouterItem[] | null;
+	routes: RouteObject[];
 };
 
 const Router = () => {

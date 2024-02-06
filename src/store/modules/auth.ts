@@ -5,21 +5,21 @@ import { devtools } from 'zustand/middleware';
 import { RouterItem } from '@/routers';
 
 interface AuthState {
-	tokenInfo?: object;
-	authInfo?: object;
-	userInfo?: object;
-	currentRouter?: RouterItem[] | null;
+	tokenInfo: object | null;
+	authInfo: object | null;
+	userInfo: object | null;
+	currentRouter: RouterItem[] | null;
 }
 
 interface AuthStateFunc {
 	resetAuthStore: () => void;
-	updateAuthStore: (values: AuthState) => void;
+	updateAuthStore: (values: Partial<AuthState>) => void;
 }
 
 const initAuthState = {
-	tokenInfo: {},
-	authInfo: {},
-	userInfo: {},
+	tokenInfo: null,
+	authInfo: null,
+	userInfo: null,
 	currentRouter: null
 };
 
@@ -29,7 +29,7 @@ export const useAuthStore = create<AuthState & AuthStateFunc>()(
 			set => ({
 				...initAuthState,
 				resetAuthStore: () => set(initAuthState, true),
-				updateAuthStore: (values: AuthState) => set((state: AuthState) => ({ ...state, ...values }))
+				updateAuthStore: (values: Partial<AuthState>) => set((state: AuthState) => ({ ...state, ...values }))
 			}),
 			{
 				name: 'auth-storage',
