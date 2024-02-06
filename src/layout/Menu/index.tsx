@@ -6,7 +6,7 @@ import Logo from './components/Logo';
 
 // 将 router 数据提取菜单
 const getMenuItems = routes => {
-	let menus = routes.filter(val => !val.isHide);
+	const menus = routes.filter(val => !val.isHide);
 	return menus.map(item => {
 		const { path, title, icon } = item;
 		const menuItem = { label: title, icon, path, key: path };

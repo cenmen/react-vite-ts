@@ -1,10 +1,19 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import eslintPlugin from 'vite-plugin-eslint';
-import { AUTH_API } from './src/config/env';
+import viteCompression from 'vite-plugin-compression';
+
+interface Config {
+	VITE_PORT: number;
+	VITE_OPEN: boolean;
+	VITE_APP_TITLE: string;
+	VITE_REPORT: boolean;
+	VITE_SOURCE_MAP: boolean;
+	VITE_GZIP: boolean;
+}
 
 // 将纯字符串配置转换类型
 const toTransformConfig = config => {
@@ -21,8 +30,9 @@ const toTransformConfig = config => {
 // @see: https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
 	const env = loadEnv(mode, process.cwd());
+	const IS_PROD = ['production', 'prod'].includes(mode);
 	const IS_BUILD = command === 'build';
-	const { VITE_PORT, VITE_OPEN, VITE_APP_TITLE, VITE_REPORT, VITE_SOURCE_MAP } = toTransformConfig(env);
+	const { VITE_PORT, VITE_OPEN, VITE_APP_TITLE, VITE_REPORT, VITE_SOURCE_MAP, VITE_GZIP } = toTransformConfig(env) as Config;
 
 	return {
 		// base: "/",
@@ -35,51 +45,48 @@ export default defineConfig(({ mode, command }) => {
 			cors: true,
 			port: VITE_PORT,
 			open: VITE_OPEN,
-			// https: false,
-			proxy: {
-				[AUTH_API]: {
-					target: `http://api.${mode}.com`,
-					changeOrigin: true,
-					rewrite: path => path.replace(RegExp(`^${AUTH_API}`), '')
-				}
+			host: '0.0.0.0',
+			headers: {
+				'Access-Control-Allow-Origin': '*'
 			}
+			// https: false,
 		},
 		plugins: [
 			react(),
+			splitVendorChunkPlugin(),
 			// EsLint 报错信息显示在浏览器界面上
 			eslintPlugin({
-				include: ['src/**/*.js', 'src/**/*.jsx', 'src/*.js', 'src/*.jsx']
+				include: ['src/**/*.ts', 'src/**/*.tsx', 'src/*.ts', 'src/*.tsx']
 			}),
 			createHtmlPlugin({
 				inject: {
 					data: {
 						title: VITE_APP_TITLE,
 						injectScript: IS_BUILD
-							? `<script src="/script.${mode}.js?t=${Date.now()}"></script>`
+							? IS_PROD
+								? `<script src="/env.js?t=${Date.now()}"></script>`
+								: `<script src="./script.${mode}.js?t=${Date.now()}"></script>`
 							: `<script src="/public/script.${mode}.js"></script>`
 					}
 				}
 			}),
+			VITE_GZIP &&
+				viteCompression({
+					filter: (file: string) => {
+						// 文档不压缩
+						return !/.*docs.*/.test(file) && /\.(js|mjs|json|css|html)$/i.test(file);
+					}
+				}),
 			VITE_REPORT && visualizer()
 		],
 		build: {
-			sourcemap: VITE_SOURCE_MAP,
+			sourcemap: !IS_BUILD && VITE_SOURCE_MAP,
 			minify: 'esbuild',
 			rollupOptions: {
 				output: {
 					chunkFileNames: 'assets/js/[name]-[hash].js',
 					entryFileNames: 'assets/js/[name]-[hash].js',
-					assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-					manualChunks(id) {
-						if (id.includes('node_modules')) {
-							const name = id.toString().split('node_modules/')[1].split('/')[0];
-							if (/ant(d)?/.test(name)) {
-								return 'ant-vendor';
-							} else {
-								return 'vendor';
-							}
-						}
-					}
+					assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
 				}
 			}
 		}

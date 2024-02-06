@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Layout } from 'antd';
 import { useOutlet, useLocation, useNavigate } from 'react-router-dom';
-import { animated, useSpring } from '@react-spring/web';
 import { shallow } from 'zustand/shallow';
 import { useLayoutStore, useAuthStore } from '@/store';
 import { RouterItem } from '@/routers';
@@ -25,11 +24,6 @@ const getTargetRouteItem = (pathname: string, routes: RouterItem[] | null | unde
 	}
 };
 
-const Transition: React.FC<Props> = props => {
-	const animates = useSpring({ reset: true, to: { opacity: 1, translateX: 0 }, from: { opacity: 0, translateX: -150 } });
-	return <animated.div style={animates}>{props.children}</animated.div>;
-};
-
 const LayoutIndex: React.FC<Props> = props => {
 	const { children } = props;
 	const currentRouter = useAuthStore(state => state.currentRouter);
@@ -44,7 +38,7 @@ const LayoutIndex: React.FC<Props> = props => {
 	// 监听窗口大小变化
 	const listeningWindowResize = () => {
 		window.addEventListener('resize', () => {
-			let screenWidth = document.body.clientWidth;
+			const screenWidth = document.body.clientWidth;
 			if (isCollapse === false && screenWidth < 1200) updateLayoutStore({ isCollapse: true });
 		});
 	};
@@ -68,9 +62,7 @@ const LayoutIndex: React.FC<Props> = props => {
 			</Sider>
 			<Layout>
 				<LayoutHeader />
-				<Content>
-					<Transition>{childrenContent}</Transition>
-				</Content>
+				<Content>{childrenContent}</Content>
 			</Layout>
 		</Layout>
 	);

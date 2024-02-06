@@ -1,5 +1,5 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
 import { message } from 'antd';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { getToken } from '@/utils';
 
 const errorHandler = (error: AxiosError) => {
