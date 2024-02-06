@@ -1,5 +1,4 @@
 import { HomeOutlined } from '@ant-design/icons';
-import { VIEW_HOME } from '@/constants';
 import LayoutIndex from '@/layout/Layout';
 import Home from '@/views/Home';
 
@@ -7,7 +6,7 @@ import Home from '@/views/Home';
 const homeRouter = [
 	{
 		title: '首页',
-		path: VIEW_HOME,
+		path: '/',
 		icon: <HomeOutlined />,
 		element: (
 			<LayoutIndex>

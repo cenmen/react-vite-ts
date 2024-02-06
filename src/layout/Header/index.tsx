@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Layout } from 'antd';
 import AvatarIcon from './components/AvatarIcon';
 import CollapseIcon from './components/CollapseIcon';
@@ -18,4 +19,4 @@ const LayoutHeader = () => {
 	);
 };
 
-export default LayoutHeader;
+export default memo(LayoutHeader);

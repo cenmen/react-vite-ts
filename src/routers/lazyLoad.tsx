@@ -1,7 +1,6 @@
 import { Component, Suspense } from 'react';
 import { Spin, notification } from 'antd';
 import { Link } from 'react-router-dom';
-import { VIEW_HOME } from '@/constants';
 import errorImage from '@/assets/images/error.svg';
 
 type Props = { children?: React.ReactNode };
@@ -16,7 +15,7 @@ const ErrorContainer = () => {
 		<div className='card-container p-4 flex flex-col items-center'>
 			<img className='w-2/4 max-w-2xl' src={errorImage} alt='error' />
 			<span className='text-lg font-bold mt-1.5'>系统遇到意外错误 ~</span>
-			<Link className='mt-1.5' to={VIEW_HOME}>
+			<Link className='mt-1.5' to={'/'}>
 				返回
 			</Link>
 		</div>

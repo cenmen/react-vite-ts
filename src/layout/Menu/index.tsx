@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -65,4 +65,4 @@ const LayoutMenu = () => {
 	);
 };
 
-export default LayoutMenu;
+export default memo(LayoutMenu);

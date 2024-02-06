@@ -1,7 +1,6 @@
-import { Navigate } from 'react-router-dom';
-import { VIEW_HOME, VIEW_404 } from '@/constants';
-import errorRouter from './modules/error';
-import heroRouter from './modules/hero';
+import NotFound from '@/views/Error/404';
+import demoRouter1 from './modules/demo1';
+import demoRouter2 from './modules/demo2';
 import homeRouter from './modules/home';
 
 export interface RouterItem {
@@ -25,17 +24,12 @@ export interface RouterItem {
  * @remark 非 React Router 参数会在各个 layout 组件中被手动使用
  */
 export const routers = [
-	{
-		path: '/',
-		element: <Navigate to={VIEW_HOME} />,
-		isHide: true
-	},
 	...homeRouter,
-	...heroRouter,
-	...errorRouter,
+	...demoRouter1,
+	...demoRouter2,
 	{
 		path: '*',
-		element: <Navigate to={VIEW_404} />,
-		isHide: true
+		isHide: true,
+		element: <NotFound />
 	}
 ];
